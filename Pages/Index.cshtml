@@ -1,0 +1,21 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div id="main" class="d-flex flex-column align-items-center justify-content-center">
+    <form method="post">
+        <div class="input-group search-border">
+            <select id="region" asp-for="Region" asp-items="Model.Options" class="form-select btn no-border"></select>
+            <input id="search" asp-for="Search" type="text" class="form-control no-border no-box-shadow" placeholder="Search..">
+            <div class="input-group-append">
+                <button id="search-submit" type="submit" class="btn no-border">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+

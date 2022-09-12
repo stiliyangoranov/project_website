@@ -1,0 +1,44 @@
+﻿#main {
+    position: relative;
+    top: 40vh;
+}
+
+/*Search Bar*/
+#search {
+    border-left: 1px solid #ced4da;
+}
+
+.search-border {
+    background: white;
+    border-radius: 5px;
+    width: 60vh;
+}
+
+.no-border {
+    border: none;
+    margin: 5px;
+}
+
+.no-border:hover {
+    border: none;
+}
+
+.no-box-shadow:focus {
+    box-shadow: none;
+    border: none;
+}
+
+.menu {
+    background: white;
+    width: 200px;
+    border-radius: 5px;
+    padding: 5px;
+    position: relative;
+    top: 5px;
+    align-self: flex-start;
+    margin-left: calc((100% - 60vh) / 2);
+}
+
+#region {
+    max-width: 100px;
+}

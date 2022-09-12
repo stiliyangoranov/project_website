@@ -1,0 +1,14 @@
+﻿.matches-info {
+    color: white;
+}
+
+.champion-icon {
+    border-radius: 50%;
+    width: 75px;
+}
+
+.champion-runes {
+    border-radius: 50%;
+    width: 30px;
+    margin: 5px;
+}

@@ -1,0 +1,97 @@
+﻿@page
+@using project_website.Data
+@model project_website.Pages.ProfileModel
+@{
+    string leagueSolo = char.ToUpper(Model.Leagues[0].Tier[0]) + Model.Leagues[0].Tier.Substring(1).ToLower() + " " + Model.Leagues[0].Rank;
+    string leagueFlex = char.ToUpper(Model.Leagues[1].Tier[0]) + Model.Leagues[1].Tier.Substring(1).ToLower() + " " + Model.Leagues[1].Rank;
+    decimal winRateSolo = (decimal)Model.Leagues[0].Wins / (Model.Leagues[0].Wins + Model.Leagues[0].Losses) * 100;
+    decimal winRateFlex = (decimal)Model.Leagues[1].Wins / (Model.Leagues[1].Wins + Model.Leagues[1].Losses) * 100;
+}
+
+<div class="d-flex flex-row justify-content-start">
+    <div class="d-flex align-items-center justify-content-center profile">
+        <img class="profile-icon" src="~/lol/12.14.1/img/profileicon/@(Model.Profile.ProfileIconId).png" />
+        <p class="profile-info-level">@Model.Profile.SummonerLevel</p>
+    </div>
+    <div class="d-flex align-items-center profile">
+        <h1 class="profile-info-name">@Model.Profile.Name</h1>
+    </div>
+    <div class="d-flex">
+        <div class="d-flex flex-column align-items-center tier">
+            <h2 class="tier-label">Ranked Solo</h2>
+            <div class="d-flex">
+                <img class="tier-icon" src="~/lol/tier/Season_2022_-_@(Model.Leagues[0].Tier).png" />
+                <div class="d-flex flex-column justify-content-center">
+                    <p class="tier-stats">@leagueSolo</p>
+                    <p class="tier-stats">@(Model.Leagues[0].LeaguePoints) LP</p>
+                </div>
+                <div class="d-flex flex-column justify-content-center">
+                    <p class="tier-stats">@(Model.Leagues[0].Wins)W @(Model.Leagues[0].Losses)L</p>
+                    <p class="tier-stats">@(Math.Round(winRateSolo))%</p>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-column align-items-center tier">
+            <h2 class="tier-label">Ranked Flex</h2>
+            <div class="d-flex">
+                <img class="tier-icon" src="~/lol/tier/Season_2022_-_@(Model.Leagues[1].Tier).png" />
+                <div class="d-flex flex-column justify-content-center">
+                    <p class="tier-stats">@leagueFlex</p>
+                    <p class="tier-stats">@(Model.Leagues[1].LeaguePoints) LP</p>
+                </div>
+                <div class="d-flex flex-column justify-content-center">
+                    <p class="tier-stats">@(Model.Leagues[1].Wins)W @(Model.Leagues[1].Losses)L</p>
+                    <p class="tier-stats">@(Math.Round(winRateFlex))%</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@foreach (var match in Model.Matches)
+{
+    foreach (var participant in match.Participants)
+    {
+        if (participant.Puuid == Model.Profile.Puuid)
+        {
+            <div class="d-flex flex-row justify-content-start">
+                <div class="d-flex align-items-center justify-content-center">
+                    <img class="champion-icon" src="~/lol/12.14.1/img/champion/@(participant.ChampionName).png" />
+                </div>
+                <div class="d-flex flex-column justify-content-center align-items-center">
+                    <img class="champion-runes" src="~/lol/12.14.1/img/spell/@(SummonerData.GetSpellIconPath(participant.Summoner1Spell.ToString()))" />
+                    <img class="champion-runes" src="~/lol/12.14.1/img/spell/@(SummonerData.GetSpellIconPath(participant.Summoner2Spell.ToString()))" />
+                </div>
+                <div class="d-flex flex-column justify-content-center align-items-center">
+                    <img class="champion-runes" src="~/lol/img/@(RunesData.GetRuneIconPath(participant.PrimaryRuneStyle, participant.PrimaryRune))" />
+                    <img class="champion-runes" src="~/lol/img/@(RunesData.GetRuneIconPath(participant.SecondaryRuneStyle, 0))" />
+                </div>
+                <div class="d-flex flex-column align-items-center justify-content-center">
+                    <div class="d-flex">
+                        <div class="d-flex flex-column justify-content-center">
+                            <p class="tier-stats">KDA @Math.Round(participant.Kda, 2)</p>
+                            <p class="tier-stats">@participant.Kills / @participant.Deaths / @participant.Assists</p>
+                        </div>
+                        <div class="d-flex flex-column justify-content-center">
+                            <p class="tier-stats">@Math.Round(participant.VisionPerMinute, 2) Vis/Min</p>
+                            <p class="tier-stats">% KP</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex flex-column align-items-center justify-content-center">
+                    <div class="d-flex">
+                        <div class="d-flex flex-column justify-content-center">
+                            <p class="tier-stats">@Math.Round(participant.CreepScorePerMinute, 1) CS/Min</p>
+                            <p class="tier-stats">@participant.CreepScore CS</p>
+                        </div>
+                        <div class="d-flex flex-column justify-content-center">
+                            <p class="tier-stats">@Math.Round(participant.DamagePerMinute) DMG/Min</p>
+                            <p class="tier-stats">% of Team</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+}
+
