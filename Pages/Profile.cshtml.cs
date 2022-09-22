@@ -4,11 +4,19 @@ using project_website.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Options;
+using project_website.Settings;
 
 namespace project_website.Pages
 {
     public class ProfileModel : PageModel
     {
+        private readonly string _xApiKey;
+        public ProfileModel(IOptions<ApiSettings> apiSettings)
+        {
+            _xApiKey = apiSettings.Value.XApiKey;
+        }
+
         public Profile Profile { get; set; } = default!;
         public List<League> Leagues { get; set; } = default!;
         public List<Match> Matches { get; set; } = default!;
@@ -22,6 +30,7 @@ namespace project_website.Pages
 
             using (HttpClient client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Add("XApiKey", _xApiKey);
                 HttpResponseMessage profileResponse = await client.GetAsync(profileUrl);
 
                 if (profileResponse.StatusCode == HttpStatusCode.OK)
@@ -61,6 +70,7 @@ namespace project_website.Pages
 
             using (HttpClient client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Add("XApiKey", _xApiKey);
                 HttpResponseMessage matchIdsResponse = await client.GetAsync(matchesUrl);
 
                 if (matchIdsResponse.StatusCode == HttpStatusCode.OK)
